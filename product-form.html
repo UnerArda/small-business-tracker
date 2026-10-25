@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Form</title>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 th:text="#{product.form.title}">Product Form</h1>
+        <form th:action="${product.id == null} ? @{/products} : @{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post" class="mb-3">
+            <input type="hidden" th:field="*{id}" />
+            
+            <div class="form-group">
+                <label for="name" th:text="#{product.name}">Name:</label>
+                <input type="text" th:field="*{name}" class="form-control" id="name"/>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mt-2">Name Error</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="price" th:text="#{product.price}">Price:</label>
+                <input type="number" th:field="*{price}" class="form-control" id="price"/>
+                <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="alert alert-danger mt-2" th:text="#{error.price}">Price Error</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dateAdded" th:text="#{product.dateAdded}">Date Added:</label>
+                <input type="date" th:field="*{dateAdded}" class="form-control" id="dateAdded"/>
+                <div th:if="${#fields.hasErrors('dateAdded')}" th:errors="*{dateAdded}" class="alert alert-danger mt-2" th:text="#{error.dateAdded}">Date Added Error</div>
+            
+            </div>
+            <div class="form-group">
+                <label for="description" th:text="#{product.description}">Description:</label>
+                <textarea th:field="*{description}" class="form-control" id="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="categories" th:text="#{product.categories}">Categories:</label>
+               <select th:field="*{categories}" class="form-control" multiple="true" required>
+  				  <option th:each="category : ${allCategories}" th:value="${category}" th:text="${category}"></option>
+			</select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" th:text="#{product.save}">Save</button>
+        </form>
+        <a th:href="@{/products}" th:text="#{product.backToList}" class="btn btn-secondary">Back to List</a>
+    </div>
+</body>
+
+</html>
